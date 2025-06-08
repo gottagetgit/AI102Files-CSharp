@@ -13,13 +13,21 @@ namespace ComputerVisionDemo
 {
     class Program
     {
-        static string subscriptionKey = "c554d31d9d7046af89186a7a72722f75";
-        static string endpoint = "https://ai102demosjd.cognitiveservices.azure.com/";
+        static readonly string subscriptionKey =
+            Environment.GetEnvironmentVariable("COMPUTER_VISION_SUBSCRIPTION_KEY");
+        static readonly string endpoint =
+            Environment.GetEnvironmentVariable("COMPUTER_VISION_ENDPOINT");
         private const string ANALYZE_URL_IMAGE = "https://az900course.blob.core.windows.net/coursefiles/29755283098_9dd92acb6e_k.jpg";
         private const string READ_TEXT_URL_IMAGE = "https://az900course.blob.core.windows.net/coursefiles/13238807_228d3a094b_o.jpg";
 
         static void Main(string[] args)
         {
+            if (string.IsNullOrWhiteSpace(subscriptionKey) || string.IsNullOrWhiteSpace(endpoint))
+            {
+                Console.WriteLine("Please set the COMPUTER_VISION_SUBSCRIPTION_KEY and COMPUTER_VISION_ENDPOINT environment variables.");
+                return;
+            }
+
             ComputerVisionClient client = Authenticate(endpoint, subscriptionKey);
             //AnalyzeImageUrl(client, ANALYZE_URL_IMAGE).Wait();
             ReadFileUrl(client, READ_TEXT_URL_IMAGE).Wait();
