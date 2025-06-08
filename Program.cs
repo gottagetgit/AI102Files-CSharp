@@ -159,9 +159,14 @@ namespace ComputerVisionDemo
             do
             {
                 results = await client.GetReadResultAsync(Guid.Parse(operationId));
+                if (results.Status == OperationStatusCodes.Running ||
+                    results.Status == OperationStatusCodes.NotStarted)
+                {
+                    await Task.Delay(1000);
+                }
             }
-            while ((results.Status == OperationStatusCodes.Running ||
-                results.Status == OperationStatusCodes.NotStarted));
+            while (results.Status == OperationStatusCodes.Running ||
+                results.Status == OperationStatusCodes.NotStarted);
 
             Console.WriteLine();
             var textUrlFileResults = results.AnalyzeResult.ReadResults;
