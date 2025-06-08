@@ -82,7 +82,7 @@ namespace ComputerVisionDemo
             foreach (var face in results.Faces)
             {
                 Console.WriteLine($"A {face.Gender} of age {face.Age} at location {face.FaceRectangle.Left}, " +
-                  $"{face.FaceRectangle.Left}, {face.FaceRectangle.Top + face.FaceRectangle.Width}, " +
+                  $"{face.FaceRectangle.Left + face.FaceRectangle.Width}, {face.FaceRectangle.Top}, " +
                   $"{face.FaceRectangle.Top + face.FaceRectangle.Height}");
             }
             Console.WriteLine();
