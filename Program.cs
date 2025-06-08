@@ -23,6 +23,7 @@ namespace ComputerVisionDemo
             ComputerVisionClient client = Authenticate(endpoint, subscriptionKey);
             //AnalyzeImageUrl(client, ANALYZE_URL_IMAGE).Wait();
             ReadFileUrl(client, READ_TEXT_URL_IMAGE).Wait();
+            GenerateThumbnailUrl(client, ANALYZE_URL_IMAGE, "thumbnail.jpg").Wait();
         }
 
         public static ComputerVisionClient Authenticate(string endpoint, string key)
@@ -179,6 +180,18 @@ namespace ComputerVisionDemo
             }
             Console.WriteLine();
 
+        }
+
+        public static async Task GenerateThumbnailUrl(ComputerVisionClient client, string imageUrl, string outputPath)
+        {
+            Console.WriteLine($"Generating smart cropped thumbnail for {Path.GetFileName(imageUrl)}...");
+            using (Stream thumbnail = await client.GenerateThumbnailAsync(100, 100, imageUrl, true))
+            using (FileStream file = new FileStream(outputPath, FileMode.Create))
+            {
+                await thumbnail.CopyToAsync(file);
+            }
+            Console.WriteLine($"Thumbnail saved to {outputPath}");
+            Console.WriteLine();
         }
     }
 }
